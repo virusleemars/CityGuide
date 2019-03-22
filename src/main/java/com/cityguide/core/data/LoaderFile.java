@@ -26,18 +26,17 @@ public class LoaderFile {
         return list;
     }
 
-    public LoaderFile(List<ParserObject> list) {
+    public List<ParserObject> parseFile() {
         List<String> listData = loadData();
+        List<ParserObject> list = new ArrayList<>();
         ParserObject parserObject = null;
         boolean objectFind = false;
 
+        // Объект не найден?
         for (String line : listData)
-        {
-            // Объект не найден?
             if (!objectFind) {
                 // Тег объект?
                 if (line.compareTo(OBJECT_START) == 0) {
-                    parserObject = new ParserObject();
                     objectFind = true;
                 }
             }
@@ -45,16 +44,40 @@ public class LoaderFile {
             else {
                 // Информация об объекте обработана
                 if (line.compareTo(OBJECT_END) == 0) {
-                     list.add(parserObject);
-                     objectFind = false;
+                    list.add(parserObject);
+                    objectFind = false;
+                    parserObject = null;
                 }
                 // Сохранение информации об объекте
-                else{
-                    parserObject.writeData( line );
+                else {
+                    // Если объект не определен
+                    if (parserObject == null) {
+                        //  определить объект
+                        switch (NameObject.valueOf( new ParserLine(line).getData()) ){
+                            case CITY:
+                                parserObject = new ParserObjectCity();
+                                break;
+
+                            case PLACE:
+                                parserObject = new ParserObjectPlace();
+                                break;
+
+                            case COMMENT:
+                                parserObject = new ParserObjectComment();
+                                break;
+
+                            default:
+                                System.out.println("Error parser object!!!");
+                                break;
+
+                        }
+                    }
+                    parserObject.writeString(line);
                 }
 
             }
-        }
+
+        return list;
     }
 
 }

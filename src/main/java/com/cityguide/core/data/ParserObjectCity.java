@@ -1,28 +1,22 @@
 package com.cityguide.core.data;
 
-public class ParserObjectCity {
+public class ParserObjectCity extends ParserObject {
     enum CityObjectData { COUNTRY, DESCRIPTION, COORD}
 
-    private ParserObject parserObject;
-
-    public ParserObjectCity(ParserObject parserObject) {
-        this.parserObject = parserObject;
-    }
-
-    private String getData(CityObjectData city){
-        return new ParserLine(parserObject.getObjectData().get(city.ordinal() +
-                              parserObject.getSizeHeader())).getData();
+    @Override
+    String getData(Integer offset){
+        return new ParserLine(getObjectData().get(offset + getHeaderSize())).getData();
     }
 
     public String getCityCountry(){
-        return getData( CityObjectData.COUNTRY);
+        return getData( CityObjectData.COUNTRY.ordinal());
     }
 
     public String getCityDescription(){
-        return getData( CityObjectData.DESCRIPTION);
+        return getData( CityObjectData.DESCRIPTION.ordinal());
     }
 
     public String getCityCoord(){
-        return getData( CityObjectData.COORD);
+        return getData( CityObjectData.COORD.ordinal());
     }
 }

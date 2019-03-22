@@ -7,34 +7,76 @@ import java.util.*;
 
 
 public class CityGuide implements ICityGuide {
-    private static final String NAME_OBJECT_CITY = "CITY";
-    private static final String NAME_OBJECT_PLACE = "PLACE";
-    private static final String NAME_OBJECT_COMMENT = "COMMENT";
 
     private List<City> listCity;
 
+    @Override
+    public List<City> getAllCity() {
+        return listCity;
+    }
+
+    @Override
+    public List<Place> getAllPlace(String nameCity) {
+        City city = getCityByName(nameCity);
+        return city.getPlaceList();
+    }
+
+    @Override
+    public List<Comment> getAllComment(String nameCity, String namePlace) {
+        List<Place> list = getAllPlace(nameCity);
+        for (Place place : list){
+            if (place.getName().equalsIgnoreCase(namePlace)){
+                return place.getListComment();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public City getCityByName(String name) {
+        for (City c : listCity)
+            if (c.getName().equalsIgnoreCase(name)){
+                return c;
+            }
+        return null;
+    }
+
+    @Override
+    public void addCity(City city) {
+
+    }
+
+    @Override
+    public void addPlace(City city, Place place) {
+
+    }
+
+    @Override
+    public void addComment(City city, Place place, Comment comment) {
+
+    }
+
     public CityGuide() {
         listCity = new ArrayList<>();
-        List<ParserObject> listObject = new ArrayList<>();
-        new LoaderFile(listObject);
+        List<ParserObject> listObject = new LoaderFile().parseFile();
         City city;
         Place place;
 
         for (ParserObject object : listObject)
-            switch (object.getMyType()) {
-                case NAME_OBJECT_CITY:
+            switch (NameObject.valueOf(object.getMyType())) {
+                case CITY:
                     city = new City(object.getMyName());
                     city.setId(object.getMyID());
-                    ParserObjectCity parserObjectCity = new ParserObjectCity(object);
+                    ParserObjectCity parserObjectCity = (ParserObjectCity)object;
                     city.setCountry( parserObjectCity.getCityCountry());
                     city.setDescription( parserObjectCity.getCityDescription());
                     // Coordinates!!!!
                     listCity.add(city);
                     break;
 
-                case NAME_OBJECT_PLACE:
+                case PLACE:
                     if ((city = findCityByID(object.getMyIDParent())) != null) {
-                        ParserObjectPlace parserObjectPlace = new ParserObjectPlace(object);
+                        ParserObjectPlace parserObjectPlace = (ParserObjectPlace)object;
                         place = new Place(object.getMyName(), parserObjectPlace.getPlaceAddress());
                         place.setId(object.getMyID());
                         place.setIdParent(object.getMyIDParent());
@@ -44,8 +86,8 @@ public class CityGuide implements ICityGuide {
                     }
                     break;
 
-                case NAME_OBJECT_COMMENT:
-                    ParserObjectComment parserObjectComment = new ParserObjectComment(object);
+                case COMMENT:
+                    ParserObjectComment parserObjectComment = (ParserObjectComment)object;
                     if ((city = findCityByID(parserObjectComment.getIDCity())) != null)
                     if ((place = findPlaceByID(city, object.getMyIDParent())) != null){
                         Comment comment = new Comment();
@@ -56,7 +98,6 @@ public class CityGuide implements ICityGuide {
                         //comment.setCalendar();
                         comment.setReview(parserObjectComment.getReview());
                         place.addComment(comment);
-                        System.out.println("TYTA");
                     }
 
                     break;
@@ -82,12 +123,4 @@ public class CityGuide implements ICityGuide {
         return null;
     }
 
-    @Override
-    public void getCity(String name) {
-
-    }
-
-    public List<City> getListCity() {
-        return listCity;
-    }
 }

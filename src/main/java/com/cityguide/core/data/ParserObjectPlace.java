@@ -1,27 +1,21 @@
 package com.cityguide.core.data;
 
-public class ParserObjectPlace {
+public class ParserObjectPlace extends ParserObject {
     enum PlaceObjectData { ADDRESS, ANNOTATION, COORD}
 
-    private ParserObject parserObject;
-
-    public ParserObjectPlace(ParserObject parserObject) {
-        this.parserObject = parserObject;
+    String getData(Integer offset){
+        return new ParserLine(getObjectData().get(offset + getHeaderSize())).getData();
     }
 
-    private String getData(PlaceObjectData place){
-        return new ParserLine(parserObject.getObjectData().get(place.ordinal() +
-                              parserObject.getSizeHeader())).getData();
-    }
     public String getPlaceAddress(){
-        return getData( PlaceObjectData.ADDRESS);
+        return getData( PlaceObjectData.ADDRESS.ordinal());
     }
 
     public String getPlaceAnnotation(){
-        return getData( PlaceObjectData.ANNOTATION);
+        return getData( PlaceObjectData.ANNOTATION.ordinal());
     }
 
     public String getPlaceCoord(){
-        return getData( PlaceObjectData.COORD);
+        return getData( PlaceObjectData.COORD.ordinal());
     }
 }

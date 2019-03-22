@@ -3,12 +3,12 @@ package com.cityguide.core.data;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ParserObjectAbstract {
+public abstract class ParserObject {
     enum HeaderData {TYPE, ID, ID_PARENT, NAME}
 
-    List<String> objectData;
+    private List<String> objectData;
 
-    ParserObjectAbstract(){
+    ParserObject(){
         objectData = new ArrayList<>();
     }
 
@@ -22,11 +22,11 @@ public abstract class ParserObjectAbstract {
 
     abstract String getData(Integer offset);
 
-    public Integer getHeaderSize() {
+    Integer getHeaderSize() {
         return HeaderData.NAME.ordinal() + 1;
     }
 
-    String getHeader(Integer offset) {
+    private String getHeader(Integer offset) {
         return new ParserLine(objectData.get(offset)).getData();
     }
 
