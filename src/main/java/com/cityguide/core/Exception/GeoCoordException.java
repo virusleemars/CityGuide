@@ -1,4 +1,4 @@
-package com.cityguide.core;
+package com.cityguide.core.Exception;
 
 public class GeoCoordException extends Exception{
     private double fi;

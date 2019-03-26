@@ -1,15 +1,4 @@
 <data>
-    type = CITY
-    ID = 1
-    IDParent = 0
-    name = Москва
-    country = Россия
-    description = Столица
-    geocoord = 0.0, 0.0
-</data>
-
-<data>
-    type = PLACE
     ID = 1
     IDParent = 1
     name = Красная площадь
@@ -20,7 +9,6 @@
 </data>
 
 <data>
-    type = PLACE
     ID = 2
     IDParent = 1
     name = Большой театр
@@ -30,17 +18,6 @@
 </data>
 
 <data>
-    type = CITY
-    ID = 2
-    IDParent = 0
-    name = Санкт-Петербург
-    country = Россия
-    description = Столица номер 2
-    geocoord = 0.0, 0.0
-</data>
-
-<data>
-    type = PLACE
     ID = 1
     IDParent = 2
     name = Дворцовая площадь
@@ -51,7 +28,6 @@
 </data>
 
 <data>
-    type = PLACE
     ID = 2
     IDParent = 2
     name = Эрмитаж
@@ -59,16 +35,4 @@
     annotation = Музей
     geocoord = 0.0, 0.0
     rating = 5.0
-</data>
-
-<data>
-    type = COMMENT
-    ID = 1
-    IDParent = 1
-    name = User 1
-    IDCity = 1
-    Date = 01.01.2019
-    Time = 13:12:11
-    Review = Very very good
-    Rating = 5
 </data>

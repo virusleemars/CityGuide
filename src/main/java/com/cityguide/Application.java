@@ -1,9 +1,7 @@
 package com.cityguide;
 
-import com.cityguide.core.City;
-import com.cityguide.core.CityGuide;
-import com.cityguide.core.Comment;
-import com.cityguide.core.Place;
+import com.cityguide.core.*;
+import com.cityguide.data.filesystem.*;
 import com.cityguide.view.Viewer;
 
 import java.util.List;
@@ -11,26 +9,37 @@ import java.util.List;
 public class Application {
 
     public static void main(String[] args){
-        System.out.println("Start programm....");
+        // Создать объекты хранилище данных
+        Storing<City> storageCity = new StorageFileCity();
+        Storing<Place> storagePlace = new StorageFilePlace();
+        Storing<Comment> storageComment = new StorageFileComment();
 
-        CityGuide cityGuide = new CityGuide();
+        // Создать объект отображения данных
         Viewer viewer = new Viewer();
 
-        List <City> list = cityGuide.getAllCity();
-        viewer.showListCity(list);
-/*
-        City city = cityGuide.getCityByName("Москва");
-        viewer.showCity(city);
-*/
-/*
-        List<Place> listPlace = cityGuide.getAllPlace("Москва");
-        viewer.showListPlace(listPlace);
-*/
+        // Создать объект путеводитель
+        CityGuide cityGuide = new CityGuide();
 
-/*
-        List<Comment> listComment = cityGuide.getAllComment("Москва", "красная площадь");
-        viewer.showListComment(listComment);
-*/
+        // Настроить объект путеводитель
+        cityGuide.setStorage(storageCity, storagePlace, storageComment);
+        cityGuide.setViewer(viewer);
+        cityGuide.loadFromStorage();
+
+        cityGuide.requestAllCity();
+        cityGuide.requestCity("Москва");
+        cityGuide.requestCity("Москва 1");
+        cityGuide.requestPlacesCity("Ульяновск");
+        cityGuide.requestPlaceCity("Москва", "Красная площадь");
+
+        /*
+        City newCity = new City("Ульяновск");
+        newCity.setId(3);
+        newCity.setCountry("Россия");
+        newCity.setDescription("Город в европейской части России, административный центр Ульяновской области. Является городом областного значения, образует муниципальное образование город Ульяновск со статусом городского округа. Расположен на Приволжской возвышенности, на берегах рек Волги (Куйбышевское водохранилище) и Свияги, в месте сближения их русел. Находится в 890 км к востоку / юго-востоку от Москвы.");
+        newCity.setGeoCoord(54.3282400,48.3865700);
+        cityGuide.addCity(newCity);
+        */
+
     }
 }
 

@@ -1,14 +1,12 @@
 package com.cityguide.core;
 
 
+import com.cityguide.core.Exception.GeoCoordException;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Place {
-    private int id;
-    private int idParent;
-
-    private String name;
+public class Place extends Entity{
     private String address;
     private Float rating;
     private String annotation;
@@ -20,45 +18,30 @@ public class Place {
     }
 
     public Place(String name, String address) {
-        this.name = name;
+        setName(name);
         this.address = address;
         this.listComment = new ArrayList<>();
     }
 
-    public void setGeoCoord(GeoCoord geoCoord) {
-        this.geoCoord = geoCoord;
+    public void setGeoCoord(double f, double l) {
+        this.geoCoord = new GeoCoord();
+        try {
+            this.geoCoord.setFL(f, l);
+        } catch (GeoCoordException ex){
+            System.out.println(ex.getMessage());
+        }
     }
 
     public GeoCoord getGeoCoord() {
         return geoCoord;
     }
 
-    public void addComment(Comment comment){
+    void addComment(Comment comment){
         this.listComment.add(comment);
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getAddress() {
         return address;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getIdParent() {
-        return idParent;
-    }
-
-    public void setIdParent(int idParent) {
-        this.idParent = idParent;
     }
 
     public Float getRating() {
@@ -80,7 +63,7 @@ public class Place {
     @Override
     public String toString() {
         return "Place{" +
-                "name='" + name + '\'' +
+                "name='" + getName() + '\'' +
                 ", address='" + address + '\'' +
                 '}';
     }

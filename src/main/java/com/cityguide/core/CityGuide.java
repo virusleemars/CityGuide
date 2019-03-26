@@ -1,111 +1,149 @@
 package com.cityguide.core;
 
-
-import com.cityguide.core.data.*;
-
 import java.util.*;
 
 
-public class CityGuide implements ICityGuide {
-
-    private List<City> listCity;
+public class CityGuide implements Controlling {
+    private Storing<City> storageCity;
+    private Storing<Place> storagePlace;
+    private Storing<Comment> storageComment;
+    private Viewing viewer;
+    private List<City> listCity = new ArrayList<>();
 
     @Override
-    public List<City> getAllCity() {
-        return listCity;
+    public void setViewer(Viewing viewer) {
+        this.viewer = viewer;
     }
 
     @Override
-    public List<Place> getAllPlace(String nameCity) {
-        City city = getCityByName(nameCity);
-        return city.getPlaceList();
+    public void setStorage(Storing<City> storageCity, Storing<Place> storagePlace, Storing<Comment> storageComment) {
+        this.storageCity = storageCity;
+        this.storagePlace = storagePlace;
+        this.storageComment = storageComment;
     }
 
     @Override
-    public List<Comment> getAllComment(String nameCity, String namePlace) {
-        List<Place> list = getAllPlace(nameCity);
-        for (Place place : list){
-            if (place.getName().equalsIgnoreCase(namePlace)){
-                return place.getListComment();
+    public void loadFromStorage() {
+        City city;
+        listCity = storageCity.readAll();
+        List<Place> places = storagePlace.readAll();
+        List<Comment> comments = storageComment.readAll();
+        for (Place place : places){
+            if ( (city = findCityByID(place.getIdParent())) != null ){
+                city.addPlace(place);
             }
         }
-        return null;
+        for (Comment comment : comments) {
+            if ( (city = findCityByID(comment.getIdCity())) != null ){
+                Place place;
+                if ( (place = findPlaceByID( city, comment.getIdParent())) != null ){
+                    place.addComment(comment);
+                }
+            }
+        }
     }
 
     @Override
-    public City getCityByName(String name) {
+    public void requestAllCity() {
+        viewer.showListCity(listCity);
+    }
+
+    @Override
+    public void requestCity(String nameCity) {
+        City city = getCityByName(nameCity);
+        if (city != null){
+            viewer.showCity(city);
+        }
+        else{
+            viewer.showError(nameCity + " not found");
+        }
+    }
+
+    @Override
+    public void requestPlacesCity(String nameCity) {
+        City city = getCityByName(nameCity);
+        if (city != null){
+            viewer.showListPlace(city.getPlaceList());
+        }
+        else{
+            viewer.showError(nameCity + " not found");
+        }
+    }
+
+    @Override
+    public void requestPlaceCity(String nameCity, String namePlace) {
+        City city = getCityByName(nameCity);
+        if (city != null){
+           Place place = getPlaceByName(city, namePlace);
+           if (place != null){
+                viewer.showPlace(place);
+            }
+            else{
+               viewer.showError(namePlace + " not found");
+            }
+        }else{
+            viewer.showError(nameCity + " not found");
+        }
+    }
+
+    /*
+        @Override
+        public List<City> getAllCity() {
+            return listCity;
+        }
+
+        @Override
+        public List<Place> getAllPlace(String nameCity) {
+            City city = getCityByName(nameCity);
+            return city.getPlaceList();
+        }
+
+        @Override
+        public List<Comment> getAllComment(String nameCity, String namePlace) {
+            List<Place> list = getAllPlace(nameCity);
+            for (Place place : list){
+                if (place.getName().equalsIgnoreCase(namePlace)){
+                    return place.getListComment();
+                }
+            }
+            return null;
+        }
+
+        @Override
+
+
+        @Override
+        public void addCity(City city) {
+            if ( findCityByID(city.getId() ) == null){
+                listCity.add(city);
+                storageCity.writeAll(listCity);
+            }
+        }
+
+        @Override
+        public void addPlace(City city, Place place) {
+
+        }
+
+        @Override
+        public void addComment(City city, Place place, Comment comment) {
+
+        }
+    */
+    private City getCityByName(String name) {
         for (City c : listCity)
             if (c.getName().equalsIgnoreCase(name)){
-                return c;
+              return c;
             }
         return null;
     }
 
-    @Override
-    public void addCity(City city) {
-
-    }
-
-    @Override
-    public void addPlace(City city, Place place) {
-
-    }
-
-    @Override
-    public void addComment(City city, Place place, Comment comment) {
-
-    }
-
-    public CityGuide() {
-        listCity = new ArrayList<>();
-        List<ParserObject> listObject = new LoaderFile().parseFile();
-        City city;
-        Place place;
-
-        for (ParserObject object : listObject)
-            switch (NameObject.valueOf(object.getMyType())) {
-                case CITY:
-                    city = new City(object.getMyName());
-                    city.setId(object.getMyID());
-                    ParserObjectCity parserObjectCity = (ParserObjectCity)object;
-                    city.setCountry( parserObjectCity.getCityCountry());
-                    city.setDescription( parserObjectCity.getCityDescription());
-                    // Coordinates!!!!
-                    listCity.add(city);
-                    break;
-
-                case PLACE:
-                    if ((city = findCityByID(object.getMyIDParent())) != null) {
-                        ParserObjectPlace parserObjectPlace = (ParserObjectPlace)object;
-                        place = new Place(object.getMyName(), parserObjectPlace.getPlaceAddress());
-                        place.setId(object.getMyID());
-                        place.setIdParent(object.getMyIDParent());
-                        place.setAnnotation(parserObjectPlace.getPlaceAnnotation());
-                        // Coordinates!!!!
-                        city.addPlace(place);
-                    }
-                    break;
-
-                case COMMENT:
-                    ParserObjectComment parserObjectComment = (ParserObjectComment)object;
-                    if ((city = findCityByID(parserObjectComment.getIDCity())) != null)
-                    if ((place = findPlaceByID(city, object.getMyIDParent())) != null){
-                        Comment comment = new Comment();
-                        comment.setName(object.getMyName());
-                        comment.setId(object.getMyID());
-                        comment.setIdParent(object.getMyIDParent());
-                        comment.setRating(parserObjectComment.getRating());
-                        //comment.setCalendar();
-                        comment.setReview(parserObjectComment.getReview());
-                        place.addComment(comment);
-                    }
-
-                    break;
-
-                default:
-                    System.out.println("ERROR type!!!");
-                    break;
+    private Place getPlaceByName(City city, String name) {
+        for (Place p : city.getPlaceList())
+            if (p.getName().equalsIgnoreCase(name)){
+                return p;
             }
+        return null;
     }
 
     private City findCityByID(int id){
@@ -122,5 +160,6 @@ public class CityGuide implements ICityGuide {
         }
         return null;
     }
+
 
 }

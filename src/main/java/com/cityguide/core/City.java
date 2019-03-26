@@ -1,22 +1,13 @@
 package com.cityguide.core;
 
+import com.cityguide.core.Exception.GeoCoordException;
 import java.util.*;
 
-public class City {
-    private int id;
-    private String name;                        // Название города
+public class City extends Entity{
     private String country;                     // Страна
     private String description;                 // Краткое описание города
     private GeoCoord geoCoord;                  // Географические координаты
     private List<Place> placeList;              // Список мест города
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
 
     public List<Place> getPlaceList() {
         return placeList;
@@ -37,27 +28,17 @@ public class City {
     @Override
     public String toString() {
         return "City{" +
-                "name='" + name + '\'' +
+                "name='" + getName() + '\'' +
                 ", country='" + country + '\'' +
                 '}';
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-
-
     public City(String name) {
-        this.name = name;
-        placeList = new ArrayList<Place>();
+        setName(name);
+        placeList = new ArrayList<>();
     }
 
-    public void addPlace(Place place){
+    void addPlace(Place place){
         placeList.add(place);
     }
 
@@ -78,12 +59,4 @@ public class City {
         }
 
     }
-
-    public void printPlace(){
-        for (Place p : placeList)
-        {
-            System.out.println(p);
-        }
-    }
-
 }

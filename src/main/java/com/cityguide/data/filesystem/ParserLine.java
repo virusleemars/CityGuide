@@ -1,4 +1,4 @@
-package com.cityguide.core.data;
+package com.cityguide.data.filesystem;
 
 public class ParserLine {
     private static final Integer LINE_KEY_POSITION = 0;
@@ -22,5 +22,17 @@ public class ParserLine {
 
     String getData(){
         return this.data;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    static String convert(String key, String data) {
+        return key + LINE_SEPARATOR + data;
     }
 }

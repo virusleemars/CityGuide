@@ -1,6 +1,8 @@
 package com.cityguide.core;
 
 
+import com.cityguide.core.Exception.GeoCoordException;
+
 // Географические координаты
 public class GeoCoord {
     private static final double FI_MIN = -90.;
@@ -40,6 +42,10 @@ public class GeoCoord {
     public String toStringFormat(){
         return Math.abs(fi) + ((fi < 0) ? " Ю.Ш." : " С.Ш." ) + " " +
                Math.abs(lambda) + ((lambda < 0) ? " З.Д." : " В.Д." );
+    }
+
+    public String getString(){
+        return fi + ", " + lambda;
     }
 
     @Override
