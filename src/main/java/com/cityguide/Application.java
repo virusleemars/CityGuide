@@ -17,9 +17,6 @@ public class Application {
         //StoringWrapper<Comment> storingWrapperComment = new StoringWrapper<>(new StorageFileComment(), true);
         StoringWrapper<Comment> storingWrapperComment = new StoringWrapper<>(new StorageDBComment(), true);
 
-        Storing<Comment> storageComment = new StorageFileComment();
-        //Storing<Comment> storageComment = new StorageDBComment();
-
         // Создать объект отображения данных
         Viewer viewer = new Viewer();
 
