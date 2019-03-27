@@ -23,7 +23,7 @@ public class StorageFilePlace implements Storing<Place> {
     }
 
     @Override
-    public void writeAll(List<Place> list) {
+    synchronized public void writeAll(List<Place> list) {
         parserObjectFile.clear();
         for (Place place : list){
             ParserObjectPlace parserObjectPlace = new ParserObjectPlace();
@@ -31,25 +31,5 @@ public class StorageFilePlace implements Storing<Place> {
             parserObjectFile.add(parserObjectPlace);
         }
         parserObjectFile.saveParserObjects();
-    }
-
-    @Override
-    public Place read(int index) {
-        ParserObject<Place> parserObjectPlace = parserObjectFile.get(index);
-        return parserObjectPlace.getEntity();
-    }
-
-    @Override
-    public void write(Place element) {
-        ParserObjectPlace parserObjectPlace = new ParserObjectPlace();
-        parserObjectPlace.setEntity(element);
-        parserObjectFile.add(parserObjectPlace);
-        parserObjectFile.saveParserObjects();
-    }
-
-    @Override
-    public Place remove(int index) {
-        ParserObject<Place> parserObjectPlace = parserObjectFile.remove(index);
-        return parserObjectPlace.getEntity();
     }
 }

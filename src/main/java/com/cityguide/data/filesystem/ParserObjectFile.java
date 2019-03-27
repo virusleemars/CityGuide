@@ -18,10 +18,6 @@ class ParserObjectFile<T extends Entity> extends TextFile {
         list.add(parserObject);
     }
 
-    ParserObject<T> get(int index) {return list.get(index);}
-
-    ParserObject<T> remove(int index){ return list.remove(index);}
-
     void clear(){
         list.clear();
     }

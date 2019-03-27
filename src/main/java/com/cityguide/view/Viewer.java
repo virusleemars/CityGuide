@@ -23,7 +23,8 @@ public class Viewer implements Viewing {
     }
 
     public void showComment(Comment comment) {
-        System.out.println(comment.getName() + " - " + comment.getReview());
+        System.out.println("[" + comment.getCalendar() + "] " + comment.getName() +
+                            "\tОЦЕНКА: " + comment.getRating() + ": " + comment.getReview());
     }
 
     @Override

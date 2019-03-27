@@ -21,7 +21,7 @@ public class StorageFileComment implements Storing<Comment> {
     }
 
     @Override
-    public void writeAll(List<Comment> list) {
+    synchronized public void writeAll(List<Comment> list) {
         parserObjectFile.clear();
         for (Comment comment : list){
             ParserObjectComment parserObjectComment = new ParserObjectComment();
@@ -29,25 +29,5 @@ public class StorageFileComment implements Storing<Comment> {
             parserObjectFile.add(parserObjectComment);
         }
         parserObjectFile.saveParserObjects();
-    }
-
-    @Override
-    public Comment read(int index) {
-        ParserObject<Comment> parserObjectComment = parserObjectFile.get(index);
-        return parserObjectComment.getEntity();
-    }
-
-    @Override
-    public void write(Comment element) {
-        ParserObjectComment parserObjectComment = new ParserObjectComment();
-        parserObjectComment.setEntity(element);
-        parserObjectFile.add(parserObjectComment);
-        parserObjectFile.saveParserObjects();
-    }
-
-    @Override
-    public Comment remove(int index) {
-        ParserObject<Comment> parserObjectComment = parserObjectFile.remove(index);
-        return parserObjectComment.getEntity();
     }
 }

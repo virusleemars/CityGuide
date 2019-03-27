@@ -1,10 +1,18 @@
 <data>
-    ID = 1
-    IDParent = 1
-    name = User 1
-    IDCity = 1
-    Date = 01.01.2019
-    Time = 13:12:11
-    Review = Very very good
-    Rating = 5
+ID = 0
+ID_PARENT = 0
+NAME = Вася Пупкин
+IDCITY = 2
+DATE = 03.05.07 11:00
+REVIEW = Люблю гулять по красной площади
+RATING = 5
+</data>
+<data>
+ID = 1
+ID_PARENT = 0
+NAME = Пиарщик
+IDCITY = 2
+DATE = 06.01.09 22:00
+REVIEW = Никогда не ходите туда гулять
+RATING = 2
 </data>

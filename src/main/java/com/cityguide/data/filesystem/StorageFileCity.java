@@ -23,7 +23,7 @@ public class StorageFileCity implements Storing<City> {
     }
 
     @Override
-    public void writeAll(List<City> list) {
+    synchronized public void writeAll(List<City> list) {
         parserObjectFile.clear();
         for (City city : list){
             ParserObjectCity parserObjectCity = new ParserObjectCity();
@@ -31,25 +31,5 @@ public class StorageFileCity implements Storing<City> {
             parserObjectFile.add(parserObjectCity);
         }
         parserObjectFile.saveParserObjects();
-    }
-
-    @Override
-    public City read(int index) {
-        ParserObject<City> parserObjectCity = parserObjectFile.get(index);
-        return parserObjectCity.getEntity();
-    }
-
-    @Override
-    public void write(City element) {
-        ParserObjectCity parserObjectCity = new ParserObjectCity();
-        parserObjectCity.setEntity(element);
-        parserObjectFile.add(parserObjectCity);
-        parserObjectFile.saveParserObjects();
-    }
-
-    @Override
-    public City remove(int index) {
-        ParserObject<City> parserObjectCity = parserObjectFile.remove(index);
-        return parserObjectCity.getEntity();
     }
 }

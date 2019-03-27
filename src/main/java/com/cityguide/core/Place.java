@@ -8,7 +8,6 @@ import java.util.List;
 
 public class Place extends Entity{
     private String address;
-    private Float rating;
     private String annotation;
     private GeoCoord geoCoord;
     private List<Comment> listComment;
@@ -44,13 +43,10 @@ public class Place extends Entity{
         return address;
     }
 
-    public Float getRating() {
-        return rating;
+    public Double getRating() {
+        return 0.0;
     }
 
-    public void setRating(Float rating) {
-        this.rating = rating;
-    }
 
     public String getAnnotation() {
         return annotation;

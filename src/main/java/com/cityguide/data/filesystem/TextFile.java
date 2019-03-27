@@ -36,7 +36,7 @@ public class TextFile {
     void save(List<String> list) {
         BufferedWriter bWriter;
         try{
-            bWriter = new BufferedWriter(new FileWriter(name));
+            bWriter = new BufferedWriter(new FileWriter(name, false));
             for (String line : list){
                 bWriter.write(line + '\n');
             }

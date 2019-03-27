@@ -3,7 +3,7 @@ package com.cityguide.data.filesystem;
 import com.cityguide.core.Comment;
 
 public class ParserObjectComment extends ParserObject<Comment> {
-    enum CommentObjectData {IDCITY, DATE, TIME, REVIEW, RATING}
+    enum CommentObjectData {IDCITY, DATE, REVIEW, RATING}
 
     private String getData(Integer offset){
         return new ParserLine( getObjectData().get(offset + getHeaderSize())).getData();
@@ -29,12 +29,12 @@ public class ParserObjectComment extends ParserObject<Comment> {
         setData(CommentObjectData.IDCITY, String.valueOf(id));
     }
 
-    public String getDate(){
+    private String getDate(){
         return getData( CommentObjectData.DATE.ordinal());
     }
 
-    public String getTime(){
-        return getData( CommentObjectData.TIME.ordinal());
+    private void setDate(String date){
+        setData( CommentObjectData.DATE, date);
     }
 
     private String getReview(){
@@ -45,13 +45,13 @@ public class ParserObjectComment extends ParserObject<Comment> {
         setData(CommentObjectData.REVIEW, review);
     }
 
-    private void setRating(Byte rating){
+    private void setRating(int rating){
         setData(CommentObjectData.RATING, String.valueOf(rating));
     }
 
 
-    private Byte getRating(){
-        return Byte.parseByte(getData(CommentObjectData.RATING.ordinal()));
+    private Integer getRating(){
+        return Integer.parseInt(getData(CommentObjectData.RATING.ordinal()));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ParserObjectComment extends ParserObject<Comment> {
         comment.setId(super.getMyID());
         comment.setIdParent(super.getMyIDParent());
         comment.setRating(this.getRating());
-        //comment.setCalendar();
+        comment.setCalendar(this.getDate());
         comment.setReview(this.getReview());
         comment.setIdCity(this.getIDCity());
         return comment;
@@ -76,6 +76,7 @@ public class ParserObjectComment extends ParserObject<Comment> {
         this.setIDCity(entity.getIdCity());
         this.setRating(entity.getRating());
         this.setReview(entity.getReview());
+        this.setDate(entity.getCalendar());
     }
 }
 

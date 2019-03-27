@@ -1,38 +1,8 @@
 <data>
-    ID = 1
-    IDParent = 1
-    name = Красная площадь
-    address = NoName
-    annotation = Красивое место
-    geocoord = 0.0, 0.0
-    rating = 5.0
-</data>
-
-<data>
-    ID = 2
-    IDParent = 1
-    name = Большой театр
-    address = NoName
-    annotation = Красивое место
-    geocoord = 0.0, 0.0
-</data>
-
-<data>
-    ID = 1
-    IDParent = 2
-    name = Дворцовая площадь
-    address = NoName
-    annotation = Красивое место
-    geocoord = 0.0, 0.0
-    rating = 5.0
-</data>
-
-<data>
-    ID = 2
-    IDParent = 2
-    name = Эрмитаж
-    address = NoName
-    annotation = Музей
-    geocoord = 0.0, 0.0
-    rating = 5.0
+ID = 0
+ID_PARENT = 2
+NAME = Красная Площадь
+ADDRESS = расположена между Московским Кремлём (к западу) и Китай-городом (на восток)
+ANNOTATION = Общая длина — 330 метров, ширина — 75 метров, площадь — 24 750 м². Вымощена брусчаткой из крымского габбро-диабаза
+COORD = 55.753575, 37.62104
 </data>
